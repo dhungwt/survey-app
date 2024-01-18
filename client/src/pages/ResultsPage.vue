@@ -1,97 +1,57 @@
 <template>
-
     <q-page>
-
       <div class="row justify-center">
-
         <div class="col-10">
-
           <h4 class="text-center q-my-md">Poll Results</h4>
-
           <p>Select a school to show what jobs students are interested in. Select "all NYC schools" to see how many students/schools have participated.</p>
-
           <q-select
-
           outlined
-
           v-model="selectedSchool"
-
           :options="displayList"
-
           label="select a NYC high school"
-
           option-value="SchoolID"
-
           option-label="SchoolName"
-
           use-input
-
           input-debounce="0"
-
           @filter="filterSchool"
-
           clearable
-
           class="q-mb-md"
-
         >
 
         <template v-slot:option="scope">
 
           <q-item
-
             v-bind="scope.itemProps"
-
-            style="background: white;"
-
+            style="background: rgb(179, 151, 151);"
           >
 
             <q-item-section>
-
               <q-item-label lines="1">
-
                 {{ scope.opt.SchoolName }}
-
               </q-item-label>
-
             </q-item-section>
-
           </q-item>
-
         </template>
 
         <template v-slot:no-option>
-
           <q-item>
-
               <q-item-section class="text-grey">
-
               No results
-
               </q-item-section>
-
           </q-item>
-
           </template>
-
         </q-select>
-
         <div v-if="recordsFound">
-
             <GChart type="BarChart" :data="chartData" :options="chartOptions" :style="chartStyle" />
 
             <q-inner-loading :showing="loading">
-
                 <q-spinner-gears size="50px" color="primary" />
-
                 <h6 class="q-ma-none q-mt-md">loading data...</h6>
-
             </q-inner-loading>
 
         </div>
 
         <div v-if="!recordsFound" style="width: 100%; height:300px;" class="relative-position" >
-
             <p class="absolute-center text-blue">no records found!</p>
 
         </div>
@@ -167,7 +127,7 @@
       methods: {
 
           filterSchool(val, update){
-
+            console.log('RESULTS.VUE ---- Filtering schools with value: ', val);
               if (val === '') {
 
                   update(() => {
@@ -206,7 +166,7 @@
 
                   headers: {
 
-                      Accept: 'application.json',
+                      Accept: 'application/json',
 
                       'Content-Type': 'application/json'
 
@@ -275,30 +235,23 @@
       },
 
       mounted() {
+ // load school list for select drop down box
+ fetch(process.env.SERVER_URL + '/api/school-list')
+  .then(response => {
+    const clone = response.clone();
+    return response.json().catch(err => {
+      console.log('Failed to parse JSON, here is the response text:');
+      return clone.text().then(text => console.log(text));
+    });
+  })
+  .then(schoolList => {
+    this.schoolList = schoolList;
+    this.displayList = this.schoolList;
+  })
+  .catch(error => console.error('Fetch failed:', error));
+}
 
-          // load school list for select drop down box
 
-          fetch(process.env.SERVER_URL + '/api/school-list')
-
-          .then(response => response.json())
-
-          .then(schoolList => {
-
-              this.schoolList = [{SchoolID: null, SchoolName: 'all NYC schools'}].concat(schoolList)
-
-              this.displayList = this.schoolList
-
-              this.selectedSchool = {
-
-                  SchoolID: null,
-
-                  SchoolName: 'all NYC schools'
-
-              }
-
-          })
-
-      }
 
      }
 

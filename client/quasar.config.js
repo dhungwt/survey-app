@@ -62,7 +62,7 @@ module.exports = configure(function ( ctx ) {
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
       env: {
-        BASE_URL: ctx.dev ? 'http://localhost:3000' : 'http://<PROD IP address>',
+        SERVER_URL: ctx.dev ? 'http://localhost:3000' : 'http://<PROD IP address>',
         CREATOR_NAME: 'Diana Hung',
         CREATOR_EMAIL: 'dhungnycschool@gmail.com',
         LINKEDIN: 'https://www.linkedin.com/in/dhungnyc/',
@@ -98,15 +98,17 @@ module.exports = configure(function ( ctx ) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      htmlVariables: {
-
-        productName: 'BAHS Student Job Survey App',
-   
-        productDescription: 'The Bronx Aerospace High School Student Survey App collects job preferences from high school students.'
-   
-      },
+      
       // https: true
       open: true // opens browser window automatically
+    },
+
+    htmlVariables: {
+
+      productName: 'BAHS Student Job Survey App',
+ 
+      productDescription: 'The Bronx Aerospace High School Student Survey App collects job preferences from high school students.'
+ 
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
