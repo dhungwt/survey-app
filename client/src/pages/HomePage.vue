@@ -131,7 +131,7 @@
     go() {
       if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)) {
         if(this.selectedSchool !== null ){
-          this.$router.push({ name: 'Poll', query: { user: this.email, id: this.selectedSchool.SchoolID } })
+          this.$router.push({ name: 'Survey', query: { user: this.email, id: this.selectedSchool.SchoolID } })
         }else{
           this.schoolError = true
         }
